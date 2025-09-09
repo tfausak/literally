@@ -9,8 +9,7 @@ Always reference these instructions first and fallback to search or bash command
 ### Setup and Building
 - **Bootstrap the environment**:
   - The repository uses Cabal with GHC 9.12.2
-  - All required Haskell tools are pre-installed: `cabal`, `ghc`, `hlint`, `cabal-gild`
-  - Ormolu requires installation (takes 10+ minutes - see CI section below)
+  - All required Haskell tools are pre-installed: `cabal`, `ghc`, `hlint`, `cabal-gild`, `ormolu`
 
 - **Core build commands**:
   - `cabal build` -- builds the library in ~4 seconds. NEVER CANCEL.
@@ -32,17 +31,15 @@ Always reference these instructions first and fallback to search or bash command
 - **Linting and formatting** (run before committing):
   - `hlint .` -- runs HLint linter (~0.3 seconds)
   - `cabal-gild --input literally.cabal --mode check` -- checks cabal file formatting (<0.01 seconds)
-  - **Ormolu installation**: `cabal install ormolu --install-method=copy --installdir=/tmp/bin` (takes 10+ minutes, NEVER CANCEL. Set timeout to 1200+ seconds)
-  - **Ormolu formatting**: `/tmp/bin/ormolu --mode check Literally.hs` -- checks Haskell code formatting (~0.07 seconds)
+  - `ormolu --mode check Literally.hs` -- checks Haskell code formatting (~0.07 seconds)
 
 ### CI Validation (Always run before committing)
 Run these commands in order to match the GitHub Actions CI pipeline:
 1. `cabal check`
 2. `cabal-gild --input literally.cabal --mode check`  
 3. `hlint .`
-4. Install ormolu if not present: `cabal install ormolu --install-method=copy --installdir=/tmp/bin` (NEVER CANCEL - takes 10+ minutes)
-5. `/tmp/bin/ormolu --mode check Literally.hs`
-6. `cabal build`
+4. `ormolu --mode check Literally.hs`
+5. `cabal build`
 
 ## Validation
 
@@ -67,7 +64,6 @@ Run these commands in order to match the GitHub Actions CI pipeline:
 - `hlint .`: ~0.3 seconds
 - `cabal-gild check`: <0.01 seconds
 - `ormolu check`: ~0.07 seconds
-- **Ormolu installation**: 10+ minutes - Set timeout to 1200+ seconds, NEVER CANCEL
 
 ## Repository Structure
 
@@ -111,7 +107,7 @@ cabal repl
 cabal check
 cabal-gild --input literally.cabal --mode check
 hlint .
-/tmp/bin/ormolu --mode check Literally.hs  # Install first if needed
+ormolu --mode check Literally.hs
 cabal build
 cabal haddock
 ```
