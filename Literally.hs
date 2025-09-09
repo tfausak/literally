@@ -14,8 +14,8 @@ import qualified Data.Kind as Kind
 import qualified Data.Proxy as Proxy
 import qualified Data.Tuple as Tuple
 import qualified Data.Word as Word
-import qualified Numeric.Natural as Natural
 import qualified GHC.TypeLits as Type
+import qualified Numeric.Natural as Natural
 
 literal :: forall t -> (FromType t a, KnownType t a) => a
 literal t = fromType (Proxy.Proxy :: Proxy.Proxy t)
@@ -23,7 +23,7 @@ literal t = fromType (Proxy.Proxy :: Proxy.Proxy t)
 type FromType :: forall {k}. k -> Kind.Type -> Kind.Constraint
 class FromType t a where
   type KnownType t a :: Kind.Constraint
-  fromType :: KnownType t a => proxy t -> a
+  fromType :: (KnownType t a) => proxy t -> a
 
 instance FromType (n :: Type.Nat) Integer where
   type KnownType n Integer = Type.KnownNat n
@@ -61,7 +61,7 @@ instance FromType () () where
   type KnownType () () = ()
   fromType = const ()
 
-instance FromType t a => FromType t (Tuple.Solo a) where
+instance (FromType t a) => FromType t (Tuple.Solo a) where
   type KnownType t (Tuple.Solo a) = KnownType t a
   fromType = Tuple.MkSolo . fromType
 
