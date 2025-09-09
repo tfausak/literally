@@ -1,2 +1,4 @@
 /cabal.project.*
 /dist-newstyle/
+*.hi
+*.o
