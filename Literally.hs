@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -9,6 +10,8 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 module Literally where
+
+#include "MachDeps.h"
 
 import qualified Data.Kind as Kind
 import qualified Data.Proxy as Proxy
@@ -48,6 +51,18 @@ instance FromType (n :: Type.Nat) Word.Word32 where
 instance FromType (n :: Type.Nat) Word.Word64 where
   type KnownType n Word.Word64 = (Type.KnownNat n, (Type.<=) n 18446744073709551615)
   fromType = fromInteger . fromType
+
+#if WORD_SIZE_IN_BITS == 32
+instance FromType (n :: Type.Nat) Word.Word where
+  type KnownType n Word.Word = (Type.KnownNat n, (Type.<=) n 4294967295)
+  fromType = fromInteger . fromType
+#elif WORD_SIZE_IN_BITS == 64
+instance FromType (n :: Type.Nat) Word.Word where
+  type KnownType n Word.Word = (Type.KnownNat n, (Type.<=) n 18446744073709551615)
+  fromType = fromInteger . fromType
+#else
+#error "Unsupported WORD_SIZE_IN_BITS value"
+#endif
 
 instance FromType (c :: Char) Char where
   type KnownType c Char = Type.KnownChar c
