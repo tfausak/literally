@@ -57,6 +57,14 @@ instance FromType (s :: Type.Symbol) String where
   type KnownType s String = Type.KnownSymbol s
   fromType = Type.symbolVal
 
+instance FromType 'True Bool where
+  type KnownType 'True Bool = ()
+  fromType = const True
+
+instance FromType 'False Bool where
+  type KnownType 'False Bool = ()
+  fromType = const False
+
 instance FromType () () where
   type KnownType () () = ()
   fromType = const ()
