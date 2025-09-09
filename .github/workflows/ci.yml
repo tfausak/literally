@@ -1,0 +1,82 @@
+name: CI
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  cabal:
+    name: Cabal
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: cabal check
+  gild:
+    name: Gild
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: tfausak/cabal-gild-setup-action@v2
+      - run: cabal-gild --input literally.cabal --mode check
+  hlint:
+    name: HLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: haskell-actions/hlint-setup@v2
+      - uses: haskell-actions/hlint-run@v2
+        with:
+          fail-on: status
+  ormolu:
+    name: Ormolu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: haskell-actions/run-ormolu@v17
+  build:
+    name: GHC ${{ matrix.ghc }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: mkdir artifact
+      - uses: haskell/ghcup-setup@v1
+        with:
+          ghc: ${{ matrix.ghc }}
+          cabal: latest
+      - run: ghc-pkg list
+      - run: cabal sdist --output-dir artifact
+      - run: cabal configure --enable-documentation --enable-tests --haddock-for-hackage --jobs
+      - run: cat cabal.project.local
+      - run: cp cabal.project.local artifact
+      - run: cabal update
+      - run: cabal freeze
+      - run: cat cabal.project.freeze
+      - run: cp cabal.project.freeze artifact
+      - run: cabal outdated --v2-freeze-file
+      - uses: actions/cache@v4
+        with:
+          key: ${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
+          path: ~/.local/state/cabal
+          restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
+      - run: cabal build --only-download
+      - run: cabal build --only-dependencies
+      - run: cabal build
+      - run: cp dist-newstyle/literally-*-docs.tar.gz artifact
+      - run: tar --create --file artifact.tar --verbose artifact
+      - uses: actions/upload-artifact@v4
+        with:
+          name: literally-${{ github.sha }}-ghc-${{ matrix.ghc }}-${{ matrix.os }}
+          path: artifact.tar
+    strategy:
+      matrix:
+        include:
+          - ghc: 9.12
+            os: macos
+          - ghc: "9.10"
+            os: ubuntu
+          - ghc: 9.12
+            os: ubuntu
+          - ghc: 9.12
+            os: windows
