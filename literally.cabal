@@ -1,10 +1,8 @@
 cabal-version: 3.0
-
 name: literally
 version: 0.2025.9.9
 synopsis: Convert type literals into values.
 description: Literally converts type literals into values.
-
 category: Data
 license: 0BSD
 maintainer: Taylor Fausak
