@@ -23,7 +23,5 @@ jobs:
       - run: cabal-gild --version
       - uses: haskell-actions/hlint-setup@v2
       - run: hlint --version
-      - uses: haskell-actions/run-ormolu@v17
-        with:
-          pattern: do-not-run # https://github.com/haskell-actions/run-ormolu/issues/18
+      - uses: tfausak/ormolu-setup-action@v1
       - run: ormolu --version
