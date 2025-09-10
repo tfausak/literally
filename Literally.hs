@@ -52,6 +52,7 @@ instance FromType (n :: Type.Nat) Word.Word64 where
   type KnownType n Word.Word64 = (Type.KnownNat n, (Type.<=) n 18446744073709551615)
   fromType = fromInteger . fromType
 
+{- ORMOLU_DISABLE -}
 #if WORD_SIZE_IN_BITS == 32
 #define WORD_MAX 4294967295
 #elif WORD_SIZE_IN_BITS == 64
@@ -59,6 +60,7 @@ instance FromType (n :: Type.Nat) Word.Word64 where
 #else
 #error "Unsupported WORD_SIZE_IN_BITS value"
 #endif
+{- ORMOLU_ENABLE -}
 
 instance FromType (n :: Type.Nat) Word.Word where
   type KnownType n Word.Word = (Type.KnownNat n, (Type.<=) n WORD_MAX)
