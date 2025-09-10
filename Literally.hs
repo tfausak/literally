@@ -53,16 +53,16 @@ instance FromType (n :: Type.Nat) Word.Word64 where
   fromType = fromInteger . fromType
 
 #if WORD_SIZE_IN_BITS == 32
-instance FromType (n :: Type.Nat) Word.Word where
-  type KnownType n Word.Word = (Type.KnownNat n, (Type.<=) n 4294967295)
-  fromType = fromInteger . fromType
+#define WORD_MAX 4294967295
 #elif WORD_SIZE_IN_BITS == 64
-instance FromType (n :: Type.Nat) Word.Word where
-  type KnownType n Word.Word = (Type.KnownNat n, (Type.<=) n 18446744073709551615)
-  fromType = fromInteger . fromType
+#define WORD_MAX 18446744073709551615
 #else
 #error "Unsupported WORD_SIZE_IN_BITS value"
 #endif
+
+instance FromType (n :: Type.Nat) Word.Word where
+  type KnownType n Word.Word = (Type.KnownNat n, (Type.<=) n WORD_MAX)
+  fromType = fromInteger . fromType
 
 instance FromType (c :: Char) Char where
   type KnownType c Char = Type.KnownChar c
