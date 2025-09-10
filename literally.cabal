@@ -3,7 +3,7 @@ name: literally
 version: 0.2025.9.9
 synopsis: Type-safe conversion of type literals into runtime values.
 description:
-  Literally is a minimal Haskell library that converts type literals into values
+  Literally is a minimal library that converts type literals into values
   using type-safe mechanisms. It provides a single 'literal' function that
   leverages Haskell's type system to convert compile-time literals (numbers,
   strings, characters, booleans, tuples) into runtime values with compile-time

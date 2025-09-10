@@ -16,7 +16,7 @@
 -- License     : 0BSD
 -- Maintainer  : Taylor Fausak
 --
--- Literally is a minimal Haskell library that converts type literals into values
+-- Literally is a minimal library that converts type literals into values
 -- using type-safe mechanisms. It provides a single 'literal' function that
 -- leverages Haskell's type system to convert compile-time literals into runtime
 -- values with compile-time correctness guarantees.
