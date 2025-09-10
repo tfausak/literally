@@ -4,7 +4,11 @@ version: 0.2025.9.9
 synopsis: Convert type literals into values.
 description: Literally converts type literals into values.
 category: Data
+extra-doc-files:
+  CHANGELOG.md
+
 license: 0BSD
+license-file: LICENSE.txt
 maintainer: Taylor Fausak
 
 source-repository head
