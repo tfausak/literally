@@ -106,7 +106,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: ${{ needs.meta.outputs.name }}-${{ github.sha }}-ubuntu-9.12
       - run: tar --extract --file artifact.tar --verbose
