@@ -1,6 +1,6 @@
 cabal-version: 3.0
 name: literally
-version: 1.0.0.0
+version: 1.0.0.1
 synopsis: Type-safe conversion of type literals into runtime values.
 description:
   Literally is a minimal library that converts type literals into values
