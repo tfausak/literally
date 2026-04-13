@@ -112,7 +112,7 @@ jobs:
         with:
           name: ${{ needs.meta.outputs.name }}-${{ github.sha }}-ubuntu-9.12
       - run: tar --extract --file artifact.tar --verbose
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           files: artifact/${{ needs.meta.outputs.name }}-${{ needs.meta.outputs.version }}.tar.gz
       - run: cabal upload --publish --token '${{ secrets.HACKAGE_TOKEN }}' artifact/${{ needs.meta.outputs.name }}-${{ needs.meta.outputs.version }}.tar.gz
