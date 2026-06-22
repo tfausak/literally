@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: haskell-actions/run-ormolu@v17
+      - uses: haskell-actions/run-ormolu@v19
   build:
     name: GHC ${{ matrix.ghc }} on ${{ matrix.os }}
     needs: meta
